@@ -1,0 +1,9 @@
+\# test/
+\# opencv dlls/
+
+.vs/
+x64/
+Debug/
+Release/
+
+*.zip
