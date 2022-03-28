@@ -13,8 +13,10 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
    1. 使用 OpenCV 將影片檔讀進來，並運用 pictureBox 及 OpenCV 算幀數並顯示。
    2. 將每幀轉換為灰階。
 2. Morphology Operation (形態學影像處理)
-   1. Dilation
-   2. Erosion
-   3. Opening
-   4. Closing
-   5. 可自訂 Structure Element 大小
+   1. 非套 OpenCV 的 Function，自己寫的演算法。
+   2. 基本形態學影像處理
+      1. Dilation
+      2. Erosion
+      3. Opening
+      4. Closing
+   3. 可自訂 Structure Element 大小
