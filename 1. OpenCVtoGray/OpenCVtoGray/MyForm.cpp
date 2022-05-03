@@ -84,12 +84,12 @@ System::Void OpenCVtoGray::MyForm::Play_button_Click(System::Object^ sender, Sys
 	if (Play_button->Text == "Play")
 	{
 		Play_button->Text = "Pause";
-		Video_timer->Stop();
+		Video_timer->Start();
 	}
 	else if (Play_button->Text == "Pause")
 	{
 		Play_button->Text = "Play";
-		Video_timer->Start();
+		Video_timer->Stop();
 	}
 	return System::Void();
 }

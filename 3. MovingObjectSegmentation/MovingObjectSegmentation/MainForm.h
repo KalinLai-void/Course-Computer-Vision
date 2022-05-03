@@ -10,7 +10,8 @@ namespace MovingObjectSegmentation {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	
+	using namespace System::Drawing::Imaging;
+	using namespace System::Drawing::Design;
 
 	VideoInfo videoInfo;
 
@@ -45,13 +46,15 @@ namespace MovingObjectSegmentation {
 	private: System::Windows::Forms::ToolStripMenuItem^ openVideoToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^ Process_pictureBox;
 	private: System::Windows::Forms::PictureBox^ Result_pictureBox;
-	private: System::Windows::Forms::TrackBar^ VideoProcess_trackBar;
+
 	private: System::Windows::Forms::Label^ CurVideoTime_label;
 	private: System::Windows::Forms::Label^ TotalVideoTime_label;
 	private: System::Windows::Forms::ComboBox^ Method_comboBox;
 	private: System::Windows::Forms::Timer^ Video_timer;
 	private: System::Windows::Forms::Button^ Play_button;
 	private: System::Windows::Forms::OpenFileDialog^ openFileDialog1;
+	private: System::Windows::Forms::CheckBox^ IsProcessWhite_checkBox;
+	private: System::Windows::Forms::TrackBar^ VideoProcess_trackBar;
 
 	private: System::ComponentModel::IContainer^ components;
 
@@ -76,13 +79,14 @@ namespace MovingObjectSegmentation {
 			this->openVideoToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->Process_pictureBox = (gcnew System::Windows::Forms::PictureBox());
 			this->Result_pictureBox = (gcnew System::Windows::Forms::PictureBox());
-			this->VideoProcess_trackBar = (gcnew System::Windows::Forms::TrackBar());
 			this->CurVideoTime_label = (gcnew System::Windows::Forms::Label());
 			this->TotalVideoTime_label = (gcnew System::Windows::Forms::Label());
 			this->Method_comboBox = (gcnew System::Windows::Forms::ComboBox());
 			this->Video_timer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->Play_button = (gcnew System::Windows::Forms::Button());
 			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
+			this->IsProcessWhite_checkBox = (gcnew System::Windows::Forms::CheckBox());
+			this->VideoProcess_trackBar = (gcnew System::Windows::Forms::TrackBar());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Origin_pictureBox))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Process_pictureBox))->BeginInit();
@@ -92,9 +96,9 @@ namespace MovingObjectSegmentation {
 			// 
 			// Origin_pictureBox
 			// 
-			this->Origin_pictureBox->Location = System::Drawing::Point(12, 71);
+			this->Origin_pictureBox->Location = System::Drawing::Point(30, 71);
 			this->Origin_pictureBox->Name = L"Origin_pictureBox";
-			this->Origin_pictureBox->Size = System::Drawing::Size(360, 300);
+			this->Origin_pictureBox->Size = System::Drawing::Size(320, 240);
 			this->Origin_pictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->Origin_pictureBox->TabIndex = 0;
 			this->Origin_pictureBox->TabStop = false;
@@ -106,7 +110,7 @@ namespace MovingObjectSegmentation {
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->openVideoToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1114, 33);
+			this->menuStrip1->Size = System::Drawing::Size(1055, 33);
 			this->menuStrip1->TabIndex = 1;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -121,40 +125,26 @@ namespace MovingObjectSegmentation {
 			// 
 			this->Process_pictureBox->Location = System::Drawing::Point(378, 71);
 			this->Process_pictureBox->Name = L"Process_pictureBox";
-			this->Process_pictureBox->Size = System::Drawing::Size(360, 300);
+			this->Process_pictureBox->Size = System::Drawing::Size(320, 240);
 			this->Process_pictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->Process_pictureBox->TabIndex = 2;
 			this->Process_pictureBox->TabStop = false;
 			// 
 			// Result_pictureBox
 			// 
-			this->Result_pictureBox->Location = System::Drawing::Point(744, 71);
+			this->Result_pictureBox->Location = System::Drawing::Point(725, 71);
 			this->Result_pictureBox->Name = L"Result_pictureBox";
-			this->Result_pictureBox->Size = System::Drawing::Size(360, 300);
+			this->Result_pictureBox->Size = System::Drawing::Size(320, 240);
 			this->Result_pictureBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->Result_pictureBox->TabIndex = 3;
 			this->Result_pictureBox->TabStop = false;
-			// 
-			// VideoProcess_trackBar
-			// 
-			this->VideoProcess_trackBar->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->VideoProcess_trackBar->BackColor = System::Drawing::SystemColors::Control;
-			this->VideoProcess_trackBar->Location = System::Drawing::Point(378, 386);
-			this->VideoProcess_trackBar->Maximum = 1000;
-			this->VideoProcess_trackBar->Name = L"VideoProcess_trackBar";
-			this->VideoProcess_trackBar->Size = System::Drawing::Size(360, 39);
-			this->VideoProcess_trackBar->TabIndex = 4;
-			this->VideoProcess_trackBar->TickStyle = System::Windows::Forms::TickStyle::None;
-			this->VideoProcess_trackBar->Scroll += gcnew System::EventHandler(this, &MainForm::VideoProcess_trackBar_Scroll);
 			// 
 			// CurVideoTime_label
 			// 
 			this->CurVideoTime_label->AutoSize = true;
 			this->CurVideoTime_label->Font = (gcnew System::Drawing::Font(L"PMingLiU", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->CurVideoTime_label->Location = System::Drawing::Point(328, 389);
+			this->CurVideoTime_label->Location = System::Drawing::Point(328, 334);
 			this->CurVideoTime_label->Name = L"CurVideoTime_label";
 			this->CurVideoTime_label->Size = System::Drawing::Size(44, 16);
 			this->CurVideoTime_label->TabIndex = 5;
@@ -165,7 +155,7 @@ namespace MovingObjectSegmentation {
 			this->TotalVideoTime_label->AutoSize = true;
 			this->TotalVideoTime_label->Font = (gcnew System::Drawing::Font(L"PMingLiU", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->TotalVideoTime_label->Location = System::Drawing::Point(744, 389);
+			this->TotalVideoTime_label->Location = System::Drawing::Point(704, 334);
 			this->TotalVideoTime_label->Name = L"TotalVideoTime_label";
 			this->TotalVideoTime_label->Size = System::Drawing::Size(44, 16);
 			this->TotalVideoTime_label->TabIndex = 6;
@@ -191,7 +181,7 @@ namespace MovingObjectSegmentation {
 			// 
 			this->Play_button->Font = (gcnew System::Drawing::Font(L"PMingLiU", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(136)));
-			this->Play_button->Location = System::Drawing::Point(234, 377);
+			this->Play_button->Location = System::Drawing::Point(234, 322);
 			this->Play_button->Name = L"Play_button";
 			this->Play_button->Size = System::Drawing::Size(88, 38);
 			this->Play_button->TabIndex = 8;
@@ -203,16 +193,43 @@ namespace MovingObjectSegmentation {
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
 			// 
+			// IsProcessWhite_checkBox
+			// 
+			this->IsProcessWhite_checkBox->AutoSize = true;
+			this->IsProcessWhite_checkBox->Font = (gcnew System::Drawing::Font(L"PMingLiU", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(136)));
+			this->IsProcessWhite_checkBox->Location = System::Drawing::Point(378, 40);
+			this->IsProcessWhite_checkBox->Name = L"IsProcessWhite_checkBox";
+			this->IsProcessWhite_checkBox->Size = System::Drawing::Size(304, 25);
+			this->IsProcessWhite_checkBox->TabIndex = 9;
+			this->IsProcessWhite_checkBox->Text = L"Show the segmentation binary img";
+			this->IsProcessWhite_checkBox->UseVisualStyleBackColor = true;
+			// 
+			// VideoProcess_trackBar
+			// 
+			this->VideoProcess_trackBar->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->VideoProcess_trackBar->BackColor = System::Drawing::SystemColors::Control;
+			this->VideoProcess_trackBar->Location = System::Drawing::Point(378, 322);
+			this->VideoProcess_trackBar->Maximum = 1000;
+			this->VideoProcess_trackBar->Name = L"VideoProcess_trackBar";
+			this->VideoProcess_trackBar->Size = System::Drawing::Size(320, 45);
+			this->VideoProcess_trackBar->TabIndex = 10;
+			this->VideoProcess_trackBar->TickStyle = System::Windows::Forms::TickStyle::None;
+			this->VideoProcess_trackBar->Scroll += gcnew System::EventHandler(this, &MainForm::VideoProcess_trackBar_Scroll);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1114, 425);
+			this->ClientSize = System::Drawing::Size(1055, 376);
+			this->Controls->Add(this->VideoProcess_trackBar);
+			this->Controls->Add(this->IsProcessWhite_checkBox);
 			this->Controls->Add(this->Play_button);
 			this->Controls->Add(this->Method_comboBox);
 			this->Controls->Add(this->TotalVideoTime_label);
 			this->Controls->Add(this->CurVideoTime_label);
-			this->Controls->Add(this->VideoProcess_trackBar);
 			this->Controls->Add(this->Result_pictureBox);
 			this->Controls->Add(this->Process_pictureBox);
 			this->Controls->Add(this->Origin_pictureBox);
@@ -243,6 +260,23 @@ namespace MovingObjectSegmentation {
 	private: System::Void SetVideoProcessBarInfo(bool bIsInit, long posNow);
 	private: Bitmap^ ConvertMatToBitmap(cv::Mat mat);
 
-	private: Bitmap^ BackgroundSubstraction(cv::Mat mat, cv::Mat* outMat);
+	private: Bitmap^ BackgroundSubtraction(cv::Mat mat, cv::Mat* binMat);
+	private: Bitmap^ FrameDifference(cv::Mat mat, cv::Mat* binMat);
+
+	private: Bitmap^ GetDiff(cv::Mat mat, cv::Mat diffTarget, cv::Mat* binMat);
+
+	private: System::Void SelectObjects(Bitmap^ binaryBmp);
+	private: System::Void ConnectedComponentLabeling(BitmapData^ bmpBD, int x, int y, int num);
+	private: System::Void DrawArea(Bitmap^ binaryBmp, int num);
+
+	/****************************************** Morphology Operation ******************************************/
+	/* mode = 0: Dilation, mode = 1 : Erosion */
+	private: Bitmap^ DilationOrErosion(int mode, Bitmap^ bmp);
+
+	/* mode = 0: Dilation, mode = 1 : Erosion */
+	private: System::Void GetOriginImgData(int mode, BitmapData^ bmpBD, array<bool, 2>^ bIsTextPixel, array<unsigned char, 2>^ matPixel);
+	/* mode = 0: Dilation, mode = 1 : Erosion */
+	private: System::Void HandlePixels(int mode, BitmapData^ bmpBD, array<bool, 2>^ bIsTextPixel, array<unsigned char, 2>^ matPixel);
+	private: Bitmap^ CopyPixelArrToOutput(Bitmap^ bmp, array<unsigned char, 2>^ pixelArray);
 };
 }
