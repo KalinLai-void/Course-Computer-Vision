@@ -21,11 +21,12 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
       4. Closing
    3. 可自訂 Structure Element 大小
 3. Moving Object Segmentation（移動物切割）
-   1. 背景相減法（Background Subtraction）
-   2. 相鄰相減法（Frame Difference）
-   3. 移動物框選
+   1. 除了avi開檔套用OpenCV的開檔方式，其他非套 OpenCV 的 Function，皆為自己寫的演算法。
+   2. 背景相減法（Background Subtraction）
+   3. 相鄰相減法（Frame Difference）
+   4. 移動物框選
       1. 使用圖學理論中的「Connected-component labeling」演算法，透過dfs遞迴實作。
-   4. Demo
+   5. Demo
       1. Background Subtraction
          ![](3.%20MovingObjectSegmentation/BackgroundSubtraction.gif)
       2. Frame Difference
