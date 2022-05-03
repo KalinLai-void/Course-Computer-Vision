@@ -25,7 +25,7 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
    2. 背景相減法（Background Subtraction）
    3. 相鄰相減法（Frame Difference）
    4. 移動物框選
-      1. 使用圖學理論中的「Connected-component labeling」演算法，透過dfs遞迴實作。
+      1. 使用圖學理論中的「Connected-component labeling」演算法，透過 DFS 遞迴實作。
    5. Demo
       1. Background Subtraction
          ![](3.%20MovingObjectSegmentation/BackgroundSubtraction.gif)
