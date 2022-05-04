@@ -26,6 +26,7 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
    3. 相鄰相減法（Frame Difference）
    4. 移動物框選
       1. 使用圖學理論中的「Connected-component labeling」演算法，透過 DFS 遞迴實作。
+      2. 由於使用遞迴實作，目前已知有些情況會Overflow，尚未修復。
    5. Demo
       1. Background Subtraction
          ![](3.%20MovingObjectSegmentation/BackgroundSubtraction.gif)
