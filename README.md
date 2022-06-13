@@ -36,7 +36,7 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
          ![](3.%20MovingObjectSegmentation/FrameDifference_OpenCV_vtestAVI.gif) 
 4. Fire Detection（火焰偵測）
    1. 還沒寫完...
-5. Deep Learning : Image Classification（深度學習─圖像分類） [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg))](https://colab.research.google.com/github/KalinLai-void/Course-Computer-Vision/blob/master/5.%20DL%20-%20ImageClassification/Pytorch/class_cifar.ipynb)
+5. Deep Learning : Image Classification（深度學習─圖像分類） [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KalinLai-void/Course-Computer-Vision/blob/master/5.%20DL%20-%20ImageClassification/Pytorch/class_cifar.ipynb)
    1. 目前只有寫 PyTorch 的版本，TensorFlow之後有寫再補上。
       1. 以 [PyTorch 官方的「圖像分類」教學](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html)修改而成。
       2. 使用 Cifar-10 的資料集訓練。
