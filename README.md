@@ -4,9 +4,16 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
 **該課程為「影像處理實務」之進階課程**，而「影像處理實務」之作業檔案[在此](https://github.com/KalinLai-void/Course_Image-Processing)。
 
 ### 環境
+#### 第一~四題
 - VS 2019
 - OpenCV 4.5.5 (CMake Build)
 - C++ CLR (.Net Framework)
+
+#### 第五題
+- Google Colab
+- Python 3
+- PyTorch
+- ~TensorFlow~（之後補上）
 
 ### 說明
 1. Using OpenCV open video and transfer it to Gray (影片灰階)
