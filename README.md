@@ -25,10 +25,12 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
    2. 背景相減法（Background Subtraction）
    3. 相鄰相減法（Frame Difference）
    4. 移動物框選
-      1. 使用圖學理論中的「Connected-component labeling」演算法，透過 DFS 遞迴實作。
-      2. 由於使用遞迴實作，目前已知有些情況會Overflow，尚未修復。
+      1. 使用圖學理論中的「Connected-component labeling」演算法。使用非遞迴式 BFS 實作。
+      2. 程式碼中也有遞迴式 DFS 的實作版本。因為最一開始是用遞迴寫，但後來發現有些案例會 Overflow（其實還蠻常的），所以才改成非遞迴式 BFS。
    5. Demo
       1. Background Subtraction
          ![](3.%20MovingObjectSegmentation/BackgroundSubtraction.gif)
       2. Frame Difference
          ![](3.%20MovingObjectSegmentation/FrameDifference.gif)
+         - using OpenCV sample "[vtest.avi](https://github.com/opencv/opencv/blob/master/samples/data/vtest.avi)"
+         ![](3.%20MovingObjectSegmentation/FrameDifference_OpenCV_vtestAVI.gif) 

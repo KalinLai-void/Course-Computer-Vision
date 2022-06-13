@@ -15,6 +15,12 @@ namespace MovingObjectSegmentation {
 
 	VideoInfo videoInfo;
 
+	struct Position
+	{
+		int row;
+		int col;
+	};
+
 	/// <summary>
 	/// Summary for MainForm
 	/// </summary>
@@ -266,7 +272,8 @@ namespace MovingObjectSegmentation {
 	private: Bitmap^ GetDiff(cv::Mat mat, cv::Mat diffTarget, cv::Mat* binMat);
 
 	private: System::Void SelectObjects(Bitmap^ binaryBmp);
-	private: System::Void ConnectedComponentLabeling(BitmapData^ bmpBD, int x, int y, int num);
+	private: System::Void ConnectedComponentLabeling_DFS(BitmapData^ bmpBD, int x, int y, int num); // using recursive DFS (sometimes overflow)
+	private: int ConnectedComponentLabeling_BFS(BitmapData^ bmpBD, int num); // using iterative BFS (avoid overflow), return labelNum
 	private: System::Void DrawArea(Bitmap^ binaryBmp, int num);
 
 	/****************************************** Morphology Operation ******************************************/

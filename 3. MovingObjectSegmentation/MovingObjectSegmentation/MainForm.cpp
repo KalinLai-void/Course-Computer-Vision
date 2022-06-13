@@ -1,5 +1,6 @@
 ﻿#include "MainForm.h"
 #include "opencv2/opencv.hpp"
+#include "Queue"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -216,10 +217,14 @@ System::Void MovingObjectSegmentation::MainForm::SelectObjects(Bitmap^ binaryBmp
 	BitmapData^ binBmpBD = binaryBmp->LockBits(Rectangle(0, 0, binaryBmp->Width, binaryBmp->Height), ImageLockMode::ReadWrite, binaryBmp->PixelFormat);
 	Byte* binBmpPtr = (Byte*)((void*)binBmpBD->Scan0);
 
-	int labelNum = 0;
-
 	/* Connected Component Labeling Algorithm */
-	for (int y = 0; y < binBmpBD->Height; y++)
+
+	int labelNum = 0;
+	// Method 1: using iterative BFS to labeling
+	labelNum = ConnectedComponentLabeling_BFS(binBmpBD, labelNum);
+
+	// Method 2: get 1 target pixel, then using recursive DFS to labeling
+	/*for (int y = 0; y < binBmpBD->Height; y++)
 	{
 		for (int x = 0; x < binBmpBD->Width; x++)
 		{
@@ -228,10 +233,10 @@ System::Void MovingObjectSegmentation::MainForm::SelectObjects(Bitmap^ binaryBmp
 			{
 				labelNum++;
 				ptr[0] = ptr[1] = ptr[2] = labelNum;
-				ConnectedComponentLabeling(binBmpBD, x, y, labelNum);
+				ConnectedComponentLabeling_DFS(binBmpBD, x, y, labelNum);
 			}
 		}
-	}
+	}*/
 	binaryBmp->UnlockBits(binBmpBD);
 
 	for (int i = 1; i <= labelNum; i++)
@@ -240,29 +245,94 @@ System::Void MovingObjectSegmentation::MainForm::SelectObjects(Bitmap^ binaryBmp
 	return System::Void();
 }
 
-System::Void MovingObjectSegmentation::MainForm::ConnectedComponentLabeling(BitmapData^ bmpBD, int x, int y, int num)
+// using recursive DFS to labeling Connected-Component (sometimes Overflow)
+System::Void MovingObjectSegmentation::MainForm::ConnectedComponentLabeling_DFS(BitmapData^ bmpBD, int x, int y, int num)
 {
 	int threshold = 15;
-
-	for (int i = (y - threshold < 0 ? 0 : y - threshold) ; 
+	
+	for (int i = (y - threshold < 0 ? 0 : y - threshold);
 		i <= (y + threshold < bmpBD->Height ? y + threshold : bmpBD->Height - 1); i++)
 	{
-		for (int j = (x - threshold < 0 ? 0 : x - threshold) ; 
+		for (int j = (x - threshold < 0 ? 0 : x - threshold);
 			j <= (x + threshold < bmpBD->Width ? x + threshold : bmpBD->Width - 1); j++)
 		{
-			if (i != y && j != x) // skip origin position
+			Byte* ptr = (Byte*)((void*)bmpBD->Scan0) + j * 3 + i * bmpBD->Stride;
+			if (ptr[0] == 255 && ptr[1] == 255 && ptr[2] == 255) // finding neighbors is foreground
 			{
-				Byte* ptr = (Byte*)((void*)bmpBD->Scan0) + j * 3 + i * bmpBD->Stride;
-				if (ptr[0] == 255 && ptr[1] == 255 && ptr[2] == 255) // finding neighbors is foreground
-				{
-					ptr[0] = ptr[1] = ptr[2] = num;
-					ConnectedComponentLabeling(bmpBD, j, i, num); // find next
-				}
+				ptr[0] = ptr[1] = ptr[2] = num;
+				ConnectedComponentLabeling_DFS(bmpBD, j, i, num); // find next
 			}
 		}
 	}
 
 	return System::Void();
+}
+
+// using iterative BFS to labeling Connected-Component (Avoid Overflow)
+int MovingObjectSegmentation::MainForm::ConnectedComponentLabeling_BFS(BitmapData^ bmpBD, int num)
+{
+	int threshold = 15;
+
+	bool** isLabeled = new bool* [bmpBD->Height];
+	for (int i = 0; i < bmpBD->Height; i++) isLabeled[i] = new bool[bmpBD->Width];
+
+	for (int i = 0; i < bmpBD->Height; i++)
+	{
+		for (int j = 0; j < bmpBD->Width; j++)
+		{
+			Byte* ptr = (Byte*)((void*)bmpBD->Scan0) + j * 3 + i * bmpBD->Stride;
+			if (ptr[0] == 0 && ptr[1] == 0 && ptr[2] == 0) isLabeled[i][j] = true;
+			else if (ptr[0] == 255 && ptr[1] == 255 && ptr[2] == 255) isLabeled[i][j] = false;
+		}
+	}
+
+	MovingObjectSegmentation::Position loc, tmp;
+	std::queue<MovingObjectSegmentation::Position> q;
+
+	for (int y = 0; y < bmpBD->Height; y++)
+	{
+		for (int x = 0; x < bmpBD->Width; x++)
+		{
+			Byte* ptr = (Byte*)((void*)bmpBD->Scan0) + x * 3 + y * bmpBD->Stride;
+			if (!isLabeled[y][x] && (ptr[0] == 255 && ptr[1] == 255 && ptr[2] == 255)) // get a new target pixel
+			{
+				loc.row = y; loc.col = x;
+				q.push(loc);
+				isLabeled[y][x] = true;
+				num++;
+				ptr[0] = ptr[1] = ptr[2] = num;
+			}
+			else continue; // if isn't target pixel, then skip all
+
+			while (!q.empty())
+			{
+				loc = q.front(); q.pop();
+
+				// search in these range, purpose to combine overlaping region
+				for (int i = (loc.row - threshold < 0 ? 0 : loc.row - threshold);
+					i <= (loc.row + threshold < bmpBD->Height ? loc.row + threshold : bmpBD->Height - 1); i++)
+				{
+					for (int j = (loc.col - threshold < 0 ? 0 : loc.col - threshold);
+						j <= (loc.col + threshold < bmpBD->Width ? loc.col + threshold : bmpBD->Width - 1); j++)
+					{
+						ptr = (Byte*)((void*)bmpBD->Scan0) + j * 3 + i * bmpBD->Stride;
+						if (!isLabeled[i][j] && (ptr[0] == 255 && ptr[1] == 255 && ptr[2] == 255))
+						{
+							isLabeled[i][j] = true;
+							tmp.row = i; tmp.col = j;
+							ptr[0] = ptr[1] = ptr[2] = num;
+							q.push(tmp);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < bmpBD->Height; i++) delete[] isLabeled[i];
+	delete[] isLabeled;
+
+	return num;
 }
 
 System::Void MovingObjectSegmentation::MainForm::DrawArea(Bitmap^ binaryBmp, int num)
