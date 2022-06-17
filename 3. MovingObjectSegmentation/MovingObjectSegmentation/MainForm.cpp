@@ -28,7 +28,7 @@ System::Void MovingObjectSegmentation::MainForm::MainForm_Load(System::Object^ s
 System::Void MovingObjectSegmentation::MainForm::openVideoToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	openFileDialog1->FileName = "";
-	openFileDialog1->Filter = "Video File (*.avi)|*.avi";
+	openFileDialog1->Filter = "Video File (*.avi, *.mp4)|*.avi;*.mp4";
 	openFileDialog1->FilterIndex = 1;
 	if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK && openFileDialog1->FileName != "") 
 	{
