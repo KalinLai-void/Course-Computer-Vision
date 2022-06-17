@@ -50,7 +50,7 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
          2. 相鄰相減法（Frame Difference）
       2. 物件框選（這邊是**火焰物件框選**）。
    2. 先做移動物切割，再判斷火焰像素，並將火焰像素以 (B : 0, G : 0, R : 255) 標示於二值化影像上，方便除錯與處理。
-      1. 二值化影像，<u>白色區域代表移動物物件，紅色區域代表火焰像素</u>。
+      1. 二值化影像，__白色區域代表移動物物件，紅色區域代表火焰像素__。
       2. 判斷火焰像素時，基於 RGB 色彩模型 + HSI 色彩模型做以下規則：
          1. **Rule 1: R > R_T**
          2. **Rule 2: R >= G > B**
@@ -61,7 +61,7 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
             2. **30 <= S <= 100 代表較暗環境**
          6. 當為較亮環境：(Rule 1 && Rule 2 && Rule 3) == True，即為火焰像素。
          7. 當為較暗環境：(Rule 1 && Rule 2 && Rule 3 || Rule 4) == True，即為火焰像素。
-      3. R_T、S_T、I_T 為自行設定的閥值（位於程式碼中 FlameThresholdVal.h 內部調整），通常 R_T = 115~135, S_T = 55~65, I_T = 205~215 即可應付多種情況。
+      3. R_T、S_T、I_T 為自行設定的閥值（位於程式碼中 FlameThresholdVal.h 內部調整），通常 R_T = 115～135, S_T = 55～65, I_T = 205～215 即可應付多種情況。
    3. Problems：
       1. 使用 Frame Difference 作為移動物切割方法時，會有些不穩定。
       2. **還未能完整將火焰偵測正確**，即使為紅色像素的非火焰物件，程式仍有極大機率誤判。
