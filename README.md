@@ -70,9 +70,9 @@ These are the homeworks of the course "Computer Vision Implementation" in my col
       3. 夜晚的火焰，容易受環境光影響。
    4. Demo
       1. 環境較**亮**時的火焰
-         ![](4.%20FireDetection/%E7%81%AB%E7%84%B0%E5%81%B5%E6%B8%ACDeemo_Day.gif)
+         ![](4.%20FireDetection/FlameDetect_Demo_Day.gif)
       2. 環境較**暗**時的火焰
-         ![](4.%20FireDetection/%E7%81%AB%E7%84%B0%E5%81%B5%E6%B8%ACDeemo_Night.gif)
+         ![](4.%20FireDetection/FlameDetect_Demo_Night.gif)
 
 #### Deep Learning
 1. Deep Learning : Image Classification（深度學習─圖像分類） [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/KalinLai-void/Course-Computer-Vision/blob/master/5.%20DL%20-%20ImageClassification/Pytorch/class_cifar.ipynb)
